@@ -1,3 +1,15 @@
+///////////////////////////
+// Environmental Variables
+///////////////////////////
+if (process.env.NODE_ENV === "development"){
+    // env.yaml only used in development, npm run dev
+    // will error if file does not exist
+    const yenv = require('yenv')
+    const env = yenv('env.yaml', { env: process.env.NODE_ENV })
+    process.env = {...process.env, ...env}
+}
+
+
 ////////////////////////////
 // DEPENDENCIES
 ////////////////////////////
@@ -9,6 +21,7 @@ const app = new Koa();
 const PORT = process.env.PORT || 3000;
 const morgan = require("koa-morgan");
 const rootRouter = require("./controllers/rootRouter");
+
 
 /////////////////////////////
 // MIDDLEWARE
