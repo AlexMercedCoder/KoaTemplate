@@ -1,14 +1,12 @@
 ///////////////////////////
 // Environmental Variables
 ///////////////////////////
-if (process.env.NODE_ENV === "development"){
-    // env.yaml only used in development, npm run dev
-    // will error if file does not exist
-    const yenv = require('yenv')
-    const env = yenv('env.yaml', { env: process.env.NODE_ENV })
-    process.env = {...process.env, ...env}
-}
-
+require("./envfunc")();
+const {
+  PORT = 3000,
+  SECRET = "secret",
+  NODE_ENV = "development",
+} = process.env;
 
 ////////////////////////////
 // DEPENDENCIES
@@ -18,8 +16,8 @@ const cors = require('koa-better-cors')
 const corsConfig = require('./config/corsConfig')
 const kBody = require("koa-body");
 const app = new Koa();
-const PORT = process.env.PORT || 3000;
 const morgan = require("koa-morgan");
+const {log} = require("mercedlogger")
 const rootRouter = require("./controllers/rootRouter");
 
 
@@ -39,5 +37,5 @@ app.use(rootRouter.routes()).use(rootRouter.allowedMethods()); //In Controllers 
 // App Listener
 //////////////////////////
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+  log.green("Server Start", `listening on port ${PORT}`);
 });
